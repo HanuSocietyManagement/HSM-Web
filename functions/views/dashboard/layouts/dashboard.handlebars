@@ -4,6 +4,22 @@
 <head>
 
     {{> header }}
+
+    <script type="text/javascript">
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            // User is logged in.
+            $(".user_name").text(user.displayName);
+            if(user.photoURL){
+                $(".user_image_url").attr("src", user.photoURL);
+            }
+        } else {
+            // User is not logged in
+            console.log("User is not logged in");
+            window.location.href = "/login";
+        }
+        });
+  </script>
   
 </head>
 

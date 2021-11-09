@@ -1,22 +1,36 @@
 {
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "/dashboard{,/**}",
-        "function": "dashboardApp"
-      },
-      {
-        "source": "/api{,/**}",
-        "function": "api"
-      }
-    ]
-  },
+  "hosting": [
+    {
+      "target": "app",
+      "public": "public/app",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "dashboardApp"
+        }
+      ]
+    },
+    {
+      "target": "web",
+      "public": "public/web",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "homeApp"
+        }
+      ]
+    }
+  ],
   "storage": {
     "rules": "storage.rules"
   },
@@ -28,7 +42,7 @@
       "port": 9099
     },
     "firestore": {
-      "port": 8080
+      "port": 8081
     },
     "hosting": {
       "port": 5099

@@ -1,5 +1,5 @@
-const homeApp = require('./app');
-const dashboardApp = require('./dashboard');
+const homeApp = require('./web');
+const dashboardApp = require('./app');
 
 exports.homeApp = homeApp.homeApp;
 exports.dashboardApp = dashboardApp.dashboardApp;

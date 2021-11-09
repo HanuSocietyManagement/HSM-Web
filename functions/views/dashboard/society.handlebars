@@ -35,7 +35,13 @@
         </div>
       </div>
       <div class="card-body">
-        {{societyDetails.address}}
+        <p>
+          {{societyDetails.address.street1}}<br>
+          {{societyDetails.address.street2}}<br>
+          {{societyDetails.address.city}}<br>
+          {{societyDetails.address.state}}<br>
+          {{societyDetails.address.pincode}}
+        </p>
       </div>
       <!-- /.card-body -->
       <div class="card-footer">
