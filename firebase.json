@@ -66,7 +66,7 @@
       "port": 9199
     },
     "pubsub": {
-      "port": "8085"
+      "port": 8085
     },
     "ui": {
       "enabled": true
