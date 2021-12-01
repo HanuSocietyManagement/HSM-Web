@@ -1,5 +1,20 @@
 {
   "projects": {
     "default": "our-apartment"
+  },
+  "targets": {
+    "our-apartment": {
+      "hosting": {
+        "routingAPI": [
+          "routing-api"
+        ],
+        "web": [
+          "our-apartment"
+        ],
+        "app": [
+          "our-apartment-app"
+        ]
+      }
+    }
   }
 }
