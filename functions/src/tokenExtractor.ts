@@ -20,6 +20,7 @@ export async function validateFirebaseIdToken(req: Request, res: Response, next:
     let idToken = extractTokenFromRequest(req);
   
     try {
+      //console.log("ID Token: ",  idToken);
       const decodedIdToken: any = await admin.auth().verifyIdToken(idToken);
       //functions.logger.log('ID Token correctly decoded', decodedIdToken);
       //console.log("Decoded ID Token: ",  decodedIdToken);
