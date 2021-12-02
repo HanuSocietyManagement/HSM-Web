@@ -6,7 +6,7 @@
     "our-apartment": {
       "hosting": {
         "routingAPI": [
-          "routing-api"
+          "our-apartment-routing-api"
         ],
         "web": [
           "our-apartment"
