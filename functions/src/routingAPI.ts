@@ -18,31 +18,32 @@ const app = express();
 const cookieParser = require('cookie-parser')();
 
 const jar = new CookieJar();
-const axiosApi = wrapper(axios.create({ baseURL: 'https://ourapartment.app', withCredentials: true, jar }));
+const legacyApi = wrapper(axios.create({ baseURL: 'https://ourapartment.app', withCredentials: true, jar }));
+//const webApi = wrapper(axios.create({ baseURL: 'http://localhost:5099', withCredentials: true, jar }));
 
 app.use(cookieParser);
 app.use(validateFirebaseIdToken);
 
 const userCollection = jugnu.createFirebaseCollection(User);
 
-app.get('/*', async (req: Request, res: Response) => {
+app.get('/android/*', async (req: Request, res: Response) => {
 
   const userId: string = req.user? req.user.user_id : "";
   const userData: User = await userCollection.getDocument(userId);
   
   await _doLogin(userData);
-  const apiResponse = await axiosApi.get(req.path, req.body);
+  const apiResponse = await legacyApi.get(req.path, req.body);
   res.send(apiResponse.data);
 
 });
 
-app.post('/*', async (req: Request, res: Response) => {
+app.post('/android/*', async (req: Request, res: Response) => {
 
   const userId: string = req.user? req.user.user_id : "";
   const userData: User = await userCollection.getDocument(userId);
   
   await _doLogin(userData);
-  const apiResponse = await axiosApi.post(req.path, req.body);
+  const apiResponse = await legacyApi.post(req.path, req.body);
   res.send(apiResponse.data);
   
 });
@@ -55,10 +56,13 @@ async function _doLogin(user: User){
   const p = bytes.toString(CryptoJS.enc.Utf8);
 
   const data = {user_name: user.temp.u, password: p};
-  await axiosApi.post("/app/api/v1/login", data);
+  await legacyApi.post("/app/api/v1/login", data);
   //console.log("Login done", loginResponse.data);
   return;
 }
 
+app.get('/web/*', async (req: Request, res: Response) => {
+  res.send("Response from Routing API");
+});
 
 exports.routingAPI = functions.https.onRequest(app);

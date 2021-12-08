@@ -62,6 +62,22 @@ app.get('/society', async (req: Request, res: Response) => {
 
 });
 
+app.get('/expense', async (req: Request, res: Response) => {
+
+  const appSettings = {
+    appName: "Our Apartment"
+  };
+
+  const token = extractTokenFromRequest(req);
+  console.log("Token: ", token);
+  axiosApi.defaults.headers.common['Authorization'] = "Bearer " + token;
+  
+  res.render('dashboard/expense', {
+    appSettings: appSettings
+  });
+
+});
+
 async function _getSocietyDetails(){
 
   const socList = await axiosApi.get("/society");
