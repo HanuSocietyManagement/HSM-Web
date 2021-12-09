@@ -30,9 +30,11 @@ app.get('/android/*', async (req: Request, res: Response) => {
 
   const userId: string = req.user? req.user.user_id : "";
   const userData: User = await userCollection.getDocument(userId);
+  const requestPath = req.path.replace("android/", "");
+  console.log("Path requested", requestPath);
   
   await _doLogin(userData);
-  const apiResponse = await legacyApi.get(req.path, req.body);
+  const apiResponse = await legacyApi.get(requestPath, req.body);
   res.send(apiResponse.data);
 
 });
@@ -41,9 +43,11 @@ app.post('/android/*', async (req: Request, res: Response) => {
 
   const userId: string = req.user? req.user.user_id : "";
   const userData: User = await userCollection.getDocument(userId);
+  const requestPath = req.path.replace("android/", "");
+  console.log("Path requested", requestPath);
   
   await _doLogin(userData);
-  const apiResponse = await legacyApi.post(req.path, req.body);
+  const apiResponse = await legacyApi.post(requestPath, req.body);
   res.send(apiResponse.data);
   
 });
@@ -57,7 +61,7 @@ async function _doLogin(user: User){
 
   const data = {user_name: user.temp.u, password: p};
   await legacyApi.post("/app/api/v1/login", data);
-  //console.log("Login done", loginResponse.data);
+  console.log("Login done");
   return;
 }
 
