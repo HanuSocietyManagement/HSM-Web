@@ -28,13 +28,11 @@ app.set('view engine', 'handlebars');
 
 app.get('/', async (req: Request, res: Response) => {
 
-    const appSettings = {
-      appName: "Our Apartment"
-    };
-
-    res.render('dashboard/index', {
-      appSettings: appSettings
-    });
+  const appSettings = await _getAppSettings();
+  
+  res.render('dashboard/index', {
+    appSettings: appSettings
+  });
   
 });
 
@@ -46,9 +44,7 @@ app.get('/login', async (req: Request, res: Response) => {
 
 app.get('/society', async (req: Request, res: Response) => {
 
-  const appSettings = {
-    appName: "Our Apartment"
-  };
+  const appSettings = await _getAppSettings();
 
   const token = extractTokenFromRequest(req);
   console.log("Token: ", token);
@@ -64,9 +60,7 @@ app.get('/society', async (req: Request, res: Response) => {
 
 app.get('/expense', async (req: Request, res: Response) => {
 
-  const appSettings = {
-    appName: "Our Apartment"
-  };
+  const appSettings = await _getAppSettings();
 
   const token = extractTokenFromRequest(req);
   console.log("Token: ", token);
@@ -77,6 +71,13 @@ app.get('/expense', async (req: Request, res: Response) => {
   });
 
 });
+
+async function _getAppSettings() {
+  return {
+    appName: "Our Apartment",
+    backendUrl: "http://localhost:5104"
+  };
+}
 
 async function _getSocietyDetails(){
 

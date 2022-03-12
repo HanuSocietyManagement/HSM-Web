@@ -14,6 +14,7 @@ if (admin.apps.length === 0) {
 }
 
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const cookieParser = require('cookie-parser')();
 
@@ -21,8 +22,10 @@ const jar = new CookieJar();
 const legacyApi = wrapper(axios.create({ baseURL: 'https://ourapartment.app', withCredentials: true, jar }));
 //const webApi = wrapper(axios.create({ baseURL: 'http://localhost:5099', withCredentials: true, jar }));
 
+const corsOptions = {origin: "http://localhost:5099"};
 app.use(cookieParser);
 app.use(validateFirebaseIdToken);
+app.use(cors(corsOptions));
 
 const userCollection = jugnu.createFirebaseCollection(User);
 
@@ -65,8 +68,30 @@ async function _doLogin(user: User){
   return;
 }
 
-app.get('/web/*', async (req: Request, res: Response) => {
-  res.send("Response from Routing API");
+app.get('/invoice/*', async (req: Request, res: Response) => {
+
+  console.log("GET Invoice called");
+  let testData = [
+    {
+        documentNo:1,
+        invoiceDate: "25 Mar 2021",
+        description: "Invoice 3",
+        amount: 200,
+        paymentStatus: "Paid"
+    },
+    {
+        documentNo:2,
+        invoiceDate: "15 Mar 2021",
+        description: "Invoice 2",
+        amount: 200,
+        paymentStatus: "Paid"
+    }
+  ];
+  //res.set('Access-Control-Allow-Origin','http://localhost:5099');
+  //res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+
+  //res.header('Access-Control-Allow-Origin','http://localhost:50992');
+  res.send(testData);
 });
 
 exports.routingAPI = functions.https.onRequest(app);

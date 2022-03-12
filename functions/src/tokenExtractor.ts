@@ -14,24 +14,28 @@ const admin = require('firebase-admin');
  * @returns 
  */
 export async function validateFirebaseIdToken(req: Request, res: Response, next: any) {
-  
-    //functions.logger.log('Check if request is authorized with Firebase ID token');
-  
-    let idToken = extractTokenFromRequest(req);
-  
-    try {
-      //console.log("ID Token: ",  idToken);
-      const decodedIdToken: any = await admin.auth().verifyIdToken(idToken);
-      //functions.logger.log('ID Token correctly decoded', decodedIdToken);
-      //console.log("Decoded ID Token: ",  decodedIdToken);
-      req.user = decodedIdToken;
-      next();
-      return;
-    } catch (error) {
-      functions.logger.error('Error while verifying Firebase ID token:', error);
-      res.redirect('/admin/login')
-      return;
-    }
+
+  if(req.method === 'OPTIONS'){
+    next();
+    return;
+  }
+  //functions.logger.log('Check if request is authorized with Firebase ID token');
+
+  let idToken = extractTokenFromRequest(req);
+
+  try {
+    //console.log("ID Token: ",  idToken);
+    const decodedIdToken: any = await admin.auth().verifyIdToken(idToken);
+    //functions.logger.log('ID Token correctly decoded', decodedIdToken);
+    //console.log("Decoded ID Token: ",  decodedIdToken);
+    req.user = decodedIdToken;
+    next();
+    return;
+  } catch (error) {
+    functions.logger.error('Error while verifying Firebase ID token:', error);
+    res.redirect('/login')
+    return;
+  }
 };
 
 export function extractTokenFromRequest(req: Request): string | null {
